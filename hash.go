@@ -40,6 +40,8 @@ const (
 	// SHA3_512 identifies the Sha3 hashing function with 512 bit output.
 	SHA3_512 = Hash(crypto.SHA3_512)
 
+	BLAKE2b_512 = Hash(crypto.BLAKE2b_512)
+
 	maxFixed = 20
 
 	// SHAKE128 identifies the SHAKE128 Extendable-Output Function.
@@ -208,6 +210,10 @@ func (h Hash) register(n func(hid Hash, size int) newHash, name string, block, o
 	securityLevels[h] = security
 }
 
+const (
+	blockBLAKE2b = 128
+)
+
 func init() {
 	SHA256.register(newFixed, crypto.SHA256.String(), sha256.BlockSize, crypto.SHA256.Size(), sec128)
 	SHA384.register(newFixed, crypto.SHA384.String(), sha512.BlockSize, crypto.SHA384.Size(), sec192)
@@ -215,6 +221,7 @@ func init() {
 	SHA3_256.register(newFixed, crypto.SHA3_256.String(), blockSHA3256, crypto.SHA3_256.Size(), sec128)
 	SHA3_384.register(newFixed, crypto.SHA3_384.String(), blockSHA3384, crypto.SHA3_384.Size(), sec192)
 	SHA3_512.register(newFixed, crypto.SHA3_512.String(), blockSHA3512, crypto.SHA3_512.Size(), sec256)
+	BLAKE2b_512.register(newFixed, crypto.BLAKE2b_512.String(), blockBLAKE2b, crypto.BLAKE2b_512.Size(), sec256)
 	SHAKE128.register(newXOF, shake128, blockSHAKE128, size256, sec128)
 	SHAKE256.register(newXOF, shake256, blockSHAKE256, size256, sec224)
 	BLAKE2XB.register(newXOF, blake2xb, 0, size256, sec128)

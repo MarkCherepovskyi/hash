@@ -9,14 +9,15 @@
 package hash
 
 import (
+	"crypto/hkdf"
 	"crypto/hmac"
 	"crypto/sha256"
+	"crypto/sha3"
 	"crypto/sha512"
 	"errors"
 	"hash"
 
-	"crypto/hkdf"
-	"crypto/sha3"
+	"golang.org/x/crypto/blake2b"
 )
 
 const (
@@ -41,6 +42,11 @@ func newFixed(hid Hash, _ int) newHash {
 	case SHA3_256:
 		hashFunc = func() hash.Hash {
 			return sha3.New256()
+		}
+	case BLAKE2b_512:
+		hashFunc = func() hash.Hash {
+			h, _ := blake2b.New512(nil)
+			return h
 		}
 	case SHA3_384:
 		hashFunc = func() hash.Hash {
